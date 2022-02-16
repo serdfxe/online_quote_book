@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href='https://s3.timeweb.com/cc41600-sheeesh-shearcher/home/head_home.svg'></link>
+    <title>Поиск</title>
+  </head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&display=swap');
+H1{
+        font-weight:2000;
+        text-shadow: 1px 1px 0 #5D8079;
+        color: #3f5a55;
+      }
+      H2 {
+        /*font-family: comfortaa;*/
+        size:10px;
+        color: #FFFFFF;
+        transition: all 1s;
+      }
+H3{
+  size:8px;
+  color: #FFFFFF;
+  transition: all 1s;
+}
+.sidenav {
+  height: 100%;
+  width: 90px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #DBEFED;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+.sidenav a {
+  position: relative;
+  padding: 0px 8px 6px 16px;
+  top: -72px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #EDF3F3;
+  display: block;
+}
+.cursor{
+  position: relative;
+  left: 10px;
+  right: 8px;
+  bottom: 0px;
+  top: 0px;
+  height: 72px;
+}
+
+.main {
+  margin-left: 160px; /* Same as the width of the sidenav */
+  font-size: 28px; /* Increased text to enable scrolling */
+  padding: 0px 10px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+.aligncenter {
+    text-align: center;
+}
+
+.rightpic {
+    float: right; /* Выравнивание по правому краю */
+    margin: 0 0 5px 5px; /* Отступы вокруг фотографии */
+   }
+
+  .maindiv{
+    position: relative; 
+    top: -60px;
+    margin-left: auto; 
+    margin-right: auto; 
+    background-image: url(https://s3.timeweb.com/cc41600-sheeesh-shearcher/home/container_continue.svg); 
+    width: 414px;
+  }
+  .bodydiv{
+    border: 1px;
+    font-family: comfortaa;
+    size:6px;
+    color: #FFFFFF;
+    white-space: pre-line;
+    position: relative;
+    top: -35px; 
+    background-image: url(https://s3.timeweb.com/cc41600-sheeesh-shearcher/home/text_continer.svg);
+    margin-left: auto; 
+    margin-right: auto;
+    width: 344px;
+  }
+  .endimg{
+    position: relative; top: 30px;
+  }
+  .likebtn{
+    position: relative;
+    bottom: 30px;
+  }
+   
+</style>
+</head>
+<script>
+  function cursor(a){
+    cur = document.getElementById("cursor")
+    c = a.offsetTop-24
+    
+    anim = cur.animate([
+      {transform:'translate(0px,'+c+'px)'}
+    ], 250)
+    anim.addEventListener('finish', function() {
+      cur.style.transform = 'translate(0px,'+c+'px)';
+    })
+  }
+  function add_el(div, el){
+    //el = JSON.parse(el)
+    var body = el.body+'\n\n'
+    var name = el.name
+    var num = el.num
+
+    var start_img = document.createElement("img")
+    start_img.src = "https://s3.timeweb.com/cc41600-sheeesh-shearcher/home/text_continer_start.svg"
+
+    var bodydiv = document.createElement("div")
+    bodydiv.className = "bodydiv"
+
+    var bodytext = document.createTextNode(body)
+    bodydiv.appendChild(bodytext)
+
+    var nametext = document.createTextNode(name)
+    bodydiv.appendChild(nametext)
+
+    var end_img = document.createElement("img")
+    end_img.src = "https://s3.timeweb.com/cc41600-sheeesh-shearcher/home/text_continer_start.svg"
+    end_img.className = "endimg"
+    /*
+    var like_img = document.createElement("img")
+    like_img.src = "https://s3.timeweb.com/cc41600-sheeesh-shearcher/home/like_empty.svg"
+    like_img.className = "likebtn"
+    like_imf.onclick="like("+num+")"
+    */
+    var br = document.createElement('br')
+
+    div.appendChild(start_img)
+
+    div.appendChild(bodydiv)
+
+    bodydiv.appendChild(end_img)
+    
+    //div.appendChild(like_img)
+
+    div.appendChild(br)
+
+    /*
+    var el1 = document.createElement("h2");
+    var elt1 = document.createTextNode(el.body);
+    el1.appendChild(elt1);
+
+    var el2 = document.createElement("h3");
+    var elt2 = document.createTextNode(el.name);
+    el2.appendChild(elt2);
+
+    divel.appendChild(el1);
+    divel.appendChild(el2);
+    */
+  }
+
+  function show_res(info){
+    document.getElementById('1').value = ''
+
+    container = document.getElementById("mainp")
+    while (container.firstChild) {
+    container.removeChild(container.firstChild);
+}
+    mas = eval(info)
+    //alert(mas[0])
+    //var divel = document.querySelector("div");
+    /*
+    var maindiv = document.createElement("div")
+    maindiv.id = 'maindiv'
+    maindiv.className = "maindiv"
+    document.getElementById("show_area").appendChild(maindiv)
+    
+    var mainp = document.createElement("p")
+    mainp.id = 'p'
+    document.getElementById("maindiv").appendChild(mainp)*/
+    for(it of mas){
+      add_el(container, it)
+    }
+    
+  }
+
+  function search(){
+    fetch('http://sheeesh.ru/search/'+document.getElementById('1').value,{mode: 'cors'})
+        .then(function (response) {
+            return response.json()
+        }).then(function (text) {
+            /*show_res(text.messge)*/
+            //alert(decodeURIComponent(escape(text.message)))
+            //alert(text.info)
+            show_res(text.info)
+        })
+    
+  }
+
+  function isEnterPressed(e){
+    var keycode=null;
+    if (e!=null){
+        if (window.event!=undefined){
+            if (window.event.keyCode) keycode = window.event.keyCode;
+            else if (window.event.charCode) keycode = window.event.charCode;
+        }else{
+            keycode = e.keyCode;
+        }
+    }
+    return (keycode == 13);}
+</script>
+<body style = "background-color: #FCFFFF;">
+
+<div class="sidenav">
+  <img src="https://s3.timeweb.com/cc41600-sheeesh-shearcher/home/nav_cur.svg" class="cursor" id="cursor", z-index: 0>
+  <a href="http://sheeesh.ru/account", onmouseover="cursor(this)"><img src="https://s3.timeweb.com/cc41600-sheeesh-shearcher/home/account_nav.svg", height="60px", z-index: 2></a>
+  <a href="http://sheeesh.ru/home", onmouseover="cursor(this)", id='first_step'><img src="https://s3.timeweb.com/cc41600-sheeesh-shearcher/home/search_nav.svg", height="60px", z-index: 3></a>
+  <a href="http://sheeesh.ru/annotation", onmouseover="cursor(this)"><img src="https://s3.timeweb.com/cc41600-sheeesh-shearcher/home/info_nav.svg", height="60px", z-index: 4></a> 
+  <a href="http://sheeesh.ru/saves", onmouseover="cursor(this)"><img src="https://s3.timeweb.com/cc41600-sheeesh-shearcher/home/saves_nav.svg", height="60px", z-index: 5></a> 
+</div>
+
+<div class="main" id="2">
+  
+  
+  <p class="aligncenter">
+    <img src="https://s3.timeweb.com/cc41600-sheeesh-shearcher/home/head_home.svg", style="margin: auto;">
+  </p>
+
+  <p class="aligncenter">
+    <img src="https://s3.timeweb.com/cc41600-sheeesh-shearcher/home/search.svg", onclick="search()", style="position: relative; width: 300px; left: 100px">
+    <textarea class='textarea_', id='1', src="https://s3.timeweb.com/cc41600-sheeesh-shearcher/home/search.svg", onkeyup="if(isEnterPressed(event)){search()}", style="resize: none; position: relative; left: -200px; width: 200px; height: 16px; bottom: 17px;"></textarea>
+  </p>
+
+  <p class="aligncenter">
+    <img src="https://s3.timeweb.com/cc41600-sheeesh-shearcher/home/container_start.svg">
+  </p>
+
+  <p class="aligncenter" id="show_area">
+    <div class="maindiv">
+      <p class="aligncenter", id="mainp">
+      </p>
+    </div>
+  </p>
+  
+</div>
+
+</body>
